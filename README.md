@@ -12,18 +12,22 @@ K8sBuddy is an AI-powered Kubernetes assistant that helps you manage and trouble
 - ⚙️ Configurable AI provider settings
 - 🔑 Secure API key management
 - 📊 Real-time cluster information
+- 📝 Live log viewer with filtering capabilities
+- 🔍 Pod/Container/Namespace filtering
+- 📋 Copy and export log functionality
 
 ## Prerequisites
 
 - Python 3.8+
 - Kubernetes cluster (local or remote)
 - OpenAI API key (or other supported AI provider)
+- kubectl configured with your cluster
 
 ## Installation
 
 1. Clone the repository:
 ```bash
-git clone https://github.com/benjika/K8sBuddy.git
+git clone https://github.com/yourusername/K8sBuddy.git
 cd K8sBuddy
 ```
 
@@ -51,6 +55,24 @@ python app.py
 
 4. Start chatting with the AI about your Kubernetes needs!
 
+### Log Viewer
+
+The Log Viewer tab provides real-time access to your Kubernetes logs:
+
+1. Select a namespace from the dropdown
+2. Choose a pod from the updated pod list
+3. Select a container from the pod
+4. Click "Start Watching" to begin viewing logs
+5. Use "Stop Watching" to pause or "Clear Logs" to reset
+6. Copy logs using the copy button
+
+Features:
+- Live log streaming
+- Filter by namespace/pod/container
+- Last 100 lines initial view
+- Real-time updates
+- Copy functionality
+
 ## Project Structure
 
 ```
@@ -59,6 +81,7 @@ K8sBuddy/
 ├── tabs/                  # Tab components
 │   ├── chat_tab.py       # Chat interface
 │   ├── settings_tab.py   # Settings management
+│   └── log_viewer_tab.py # Log viewer interface
 ├── utils/                # Utility modules
 │   ├── env_utils.py      # Environment management
 │   └── json_utils.py     # JSON configuration
