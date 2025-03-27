@@ -52,7 +52,6 @@ def save_selected_model(provider: str, model: str) -> str:
     env_handler.set_env("AI_PROVIDER", provider)
     env_handler.set_env("AI_MODEL", model)
     show_popup(f"Selected {provider} model {model} saved successfully!")
-    return ""
 
 def create_settings_window():
     """Create the settings window with provider, model, and API key inputs."""

@@ -1,5 +1,6 @@
 import os
 from typing import Optional
+from dotenv import load_dotenv, set_key, unset_key
 
 class EnvFileHandler:
     """Handler for managing environment variables in .env file."""
@@ -12,6 +13,7 @@ class EnvFileHandler:
         """
         self.env_file = env_file
         self._ensure_env_file()
+        load_dotenv(self.env_file)
     
     def _ensure_env_file(self) -> None:
         """Ensure the .env file exists."""
@@ -29,14 +31,7 @@ class EnvFileHandler:
         Returns:
             str: The environment variable value
         """
-        try:
-            with open(self.env_file, 'r') as f:
-                for line in f:
-                    if line.startswith(f"{key}="):
-                        return line.split('=')[1].strip()
-        except Exception:
-            pass
-        return default
+        return os.getenv(key, default)
     
     def set_env(self, key: str, value: str) -> bool:
         """Set an environment variable value.
@@ -49,23 +44,8 @@ class EnvFileHandler:
             bool: True if successful, False otherwise
         """
         try:
-            # Read existing variables
-            env_vars = {}
-            if os.path.exists(self.env_file):
-                with open(self.env_file, 'r') as f:
-                    for line in f:
-                        if '=' in line:
-                            k, v = line.split('=', 1)
-                            env_vars[k.strip()] = v.strip()
-            
-            # Update the specified variable
-            env_vars[key] = value
-            
-            # Write back all variables
-            with open(self.env_file, 'w') as f:
-                f.write("# K8sBuddy Environment Variables\n")
-                for k, v in env_vars.items():
-                    f.write(f"{k}={v}\n")
+            set_key(self.env_file, key, value)
+            os.environ[key] = value
             return True
         except Exception:
             return False
@@ -80,24 +60,9 @@ class EnvFileHandler:
             bool: True if successful, False otherwise
         """
         try:
-            # Read existing variables
-            env_vars = {}
-            if os.path.exists(self.env_file):
-                with open(self.env_file, 'r') as f:
-                    for line in f:
-                        if '=' in line:
-                            k, v = line.split('=', 1)
-                            env_vars[k.strip()] = v.strip()
-            
-            # Remove the specified variable
-            if key in env_vars:
-                del env_vars[key]
-            
-            # Write back remaining variables
-            with open(self.env_file, 'w') as f:
-                f.write("# K8sBuddy Environment Variables\n")
-                for k, v in env_vars.items():
-                    f.write(f"{k}={v}\n")
+            unset_key(self.env_file, key)
+            if key in os.environ:
+                del os.environ[key]
             return True
         except Exception:
             return False 

@@ -17,8 +17,11 @@ def get_k8s_context():
         v1 = client.CoreV1Api()
         
         # Get cluster info
+        #k8s_version = v1.__vers
         cluster_info = v1.list_namespace()
         nodes = v1.list_node()
+        pods = v1.list_pod_for_all_namespaces(watch=False)
+        services = v1.list_service_for_all_namespaces()
         
         context = f"""Local Kubernetes Cluster Information:
         - Namespaces: {[ns.metadata.name for ns in cluster_info.items]}
